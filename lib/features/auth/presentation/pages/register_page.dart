@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
 //         authCubit.register(name, email, password);
 //       }
 
-//       //passwords dont match
+//       //passwords don't match
 //       else{
 //         ScaffoldMessenger.of(context).showSnackBar(
 //           const SnackBar(content: Text("Password do not match!"))
