@@ -14,6 +14,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home page'),
+        actions: [
+          IconButton(
+              onPressed: (){}, 
+              icon: Icon(Icons.message))
+        ],
       ),
       //drawer
       drawer: MyDrawer(),

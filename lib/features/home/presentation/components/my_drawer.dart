@@ -58,8 +58,8 @@ class MyDrawer extends StatelessWidget {
           
                 // //search tile
                 // MyDrawerTile(
-                //   title: 'S E A R C H', 
-                //   icon: Icons.search, 
+                //   title: '',
+                //   icon: Icons.search,
                 //   onTap: (){
                 //     Navigator.of(context).pop();
                 //     Navigator.of(context).push(
