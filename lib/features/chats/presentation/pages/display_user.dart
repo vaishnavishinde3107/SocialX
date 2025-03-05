@@ -19,7 +19,7 @@ class DisplayUser extends StatelessWidget {
     );
   }
 
-  //build the list of users and display it except the loggin in user
+  //build the list of users and display it except the logged in in user
   Widget _buildUserList(){
     return StreamBuilder(
       stream: _db.getUserStream(), 
@@ -44,17 +44,16 @@ class DisplayUser extends StatelessWidget {
 
   //build individual list title for user
   Widget _buildUserListItem(Map<String, dynamic>userData, BuildContext context){
-    //display all the users except curren user
+    //display all the users except current user
     if (userData['email']!= _db.getUserStream()) {
       return UserTile(
       text: userData['email'], 
-      onTap: () { 
+      onTap: () {
         //tapped on a user-> go to chat page
         Navigator.push(
           context, 
           MaterialPageRoute(
-            builder: (context)=> ChatPage(
-              receieverId: userData['email'],)));
+            builder: (context)=> ChatPage(receiverEmail: userData["email"])));
        },);
     }else{
     return Container();

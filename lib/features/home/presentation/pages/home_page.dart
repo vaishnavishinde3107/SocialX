@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socialx/features/chats/presentation/pages/display_user.dart';
 import 'package:socialx/features/home/presentation/components/my_drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +17,13 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home page'),
         actions: [
           IconButton(
-              onPressed: (){}, 
+              onPressed: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context)=>DisplayUser()
+                    ));
+              },
               icon: Icon(Icons.message))
         ],
       ),

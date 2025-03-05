@@ -14,6 +14,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:socialx/models/message.dart';
 import 'package:socialx/models/user.dart';
 class DatabaseService{
   // get the instance of firestore db & auth
@@ -94,5 +95,60 @@ class DatabaseService{
  FOLLOW
 
   */
+
+/*
+MESSAGING FEATURE
+* */
+
+  Stream<List<Map<String, dynamic>>> getUserStream(){
+    return _db.collection('users').snapshots().map((snapshot){
+      return snapshot.docs.map((doc){
+        //got through each individual user
+        final user = doc.data();
+
+        //return user
+        return user;
+      }).toList();
+    });
+  }
+
+  //send message
+  Future<void> sendMessage(String receiverID, message) async{
+    //get current user info
+    final String currentUserId = _auth.currentUser!.uid;
+    final String currentUserEmail = _auth.currentUser!.email!;
+    final Timestamp timestamp = Timestamp.now();
+
+    // create a new message
+    Message newMessage = Message(
+        senderID: currentUserEmail,
+        senderEmail: currentUserId,
+        receiverID: receiverID,
+        message: message,
+        timestamp: timestamp);
+
+    //construct chat room ID for the twe users(sorted to ensure uniqueness)
+    List<String> ids = [currentUserId, receiverID];
+    ids.sort(); //sort the ids (this ensure the chatroomID is the same for any 2 people)
+    String chatRoomID = ids.join('_');
+
+    //add new message to database
+    await _db.collection("chat_rooms")
+    .doc(chatRoomID)
+    .collection("messages")
+    .add(newMessage.toMap());
+  }
+  //get messages
+Stream<QuerySnapshot> getMessages(String userID, otherUserID){
+    //construct a chatroom ID for the two users
+  List<String> ids = [userID, otherUserID];
+  ids.sort();
+  String chatRoomID = ids.join('_');
+
+  return _db.collection("chat_rooms")
+      .doc(chatRoomID)
+      .collection("messages")
+      .orderBy("timestamps", descending: false).snapshots();
+}
 }
 
