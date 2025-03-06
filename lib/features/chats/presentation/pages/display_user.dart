@@ -44,8 +44,12 @@ class DisplayUser extends StatelessWidget {
 
   //build individual list title for user
   Widget _buildUserListItem(Map<String, dynamic>userData, BuildContext context){
+
+    // Get the current user's email
+    String currentUserEmail = FirebaseAuth.instance.currentUser?.email ?? '';
+
     //display all the users except current user
-    if (userData['email']!= _db.getUserStream()) {
+    if (userData['email']!= currentUserEmail) {
       return UserTile(
       text: userData['email'], 
       onTap: () {
@@ -53,7 +57,7 @@ class DisplayUser extends StatelessWidget {
         Navigator.push(
           context, 
           MaterialPageRoute(
-            builder: (context)=> ChatPage(receiverEmail: userData["email"])));
+            builder: (context)=> ChatPage(receiverUserEmail: userData["email"], receiverUserID: userData['uid'],)));
        },);
     }else{
     return Container();

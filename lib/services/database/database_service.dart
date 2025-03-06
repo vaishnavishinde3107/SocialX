@@ -112,33 +112,40 @@ MESSAGING FEATURE
     });
   }
 
-  //send message
-  Future<void> sendMessage(String receiverID, message) async{
-    //get current user info
-    final String currentUserId = _auth.currentUser!.uid;
-    final String currentUserEmail = _auth.currentUser!.email!;
-    final Timestamp timestamp = Timestamp.now();
+  //SEND MESSAGES
+  Future<void> sendMessage(String receiverID, message) async {
+    try {
+      // Get current user info
+      final String currentUserId = _auth.currentUser!.uid;
+      final String currentUserEmail = _auth.currentUser!.email!;
+      final Timestamp timestamp = Timestamp.now();
 
-    // create a new message
-    Message newMessage = Message(
-        senderID: currentUserEmail,
-        senderEmail: currentUserId,
-        receiverID: receiverID,
-        message: message,
-        timestamp: timestamp);
+      // Create a new message
+      Message newMessage = Message(
+          senderID: currentUserEmail,
+          senderEmail: currentUserId,
+          receiverID: receiverID,
+          message: message,
+          timestamp: timestamp);
 
-    //construct chat room ID for the twe users(sorted to ensure uniqueness)
-    List<String> ids = [currentUserId, receiverID];
-    ids.sort(); //sort the ids (this ensure the chatroomID is the same for any 2 people)
-    String chatRoomID = ids.join('_');
+      // Construct chat room ID for the two users (sorted to ensure uniqueness)
+      List<String> ids = [currentUserId, receiverID];
+      ids.sort(); // Sort the ids (this ensures the chatRoomID is the same for any 2 people)
+      String chatRoomID = ids.join('_');
 
-    //add new message to database
-    await _db.collection("chat_rooms")
-    .doc(chatRoomID)
-    .collection("messages")
-    .add(newMessage.toMap());
+      // Add new message to the database
+      await _db.collection("chat_rooms")
+          .doc(chatRoomID)
+          .collection("messages")
+          .add(newMessage.toMap());
+
+      print("Message sent successfully");
+    } catch (e) {
+      print("Error sending message: $e");
+    }
   }
-  //get messages
+
+  //GET MESSAGES
 Stream<QuerySnapshot> getMessages(String userID, otherUserID){
     //construct a chatroom ID for the two users
   List<String> ids = [userID, otherUserID];
@@ -148,7 +155,7 @@ Stream<QuerySnapshot> getMessages(String userID, otherUserID){
   return _db.collection("chat_rooms")
       .doc(chatRoomID)
       .collection("messages")
-      .orderBy("timestamps", descending: false).snapshots();
+      .orderBy("timestamp", descending: false).snapshots();
 }
 }
 
