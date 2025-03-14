@@ -1,12 +1,6 @@
-/*
-
-POST  MODEL
-
- */
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Post
-{
+class Post {
   final String id;
   final String uid;
   final String name;
@@ -27,32 +21,31 @@ class Post
     required this.likedBy,
   });
 
-  //Convert a Firestore Document to a Post object
-  factory Post.fromDocument(DocumentSnapshot doc){
+  // Convert Firestore Document to Post object
+  factory Post.fromDocument(DocumentSnapshot doc) {
     return Post(
-        id:doc ['id'],
-        uid:doc ['uid'],
-        name:doc ['name'],
-        username:doc ['username'],
-        message:doc ['message'],
-        timestamp: doc ['timestamp'],
-        likeCount:doc ['likeCount'],
-        likedBy: List<String>.from(doc['likedBy']?? []),
+      id: doc.id, // Firestore document ID
+      uid: doc['uid'] ?? '',
+      name: doc['name'] ?? '',
+      username: doc['username'] ?? '',
+      message: doc['message'] ?? '',
+      timestamp: doc['timestamp'] ?? Timestamp.now(),
+      likeCount: doc['likes'] ?? 0, // Fix: should match Firestore field
+      likedBy: List<String>.from(doc['likedBy'] ?? []),
     );
   }
-  //Convert a Post Object to a Map
-  Map<String,dynamic> toMap(){
-      return{
-        'uid':uid,
-        'name':name,
-        'username':username,
-        'message':message,
-        'timestamp':timestamp,
-        'likes':likeCount,
-        'likedBy':likedBy,
-      };
 
+  // Convert Post Object to a Map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id, // Ensure ID is stored
+      'uid': uid,
+      'name': name,
+      'username': username,
+      'message': message,
+      'timestamp': timestamp,
+      'likes': likeCount,
+      'likedBy': likedBy,
+    };
   }
-
-
 }
