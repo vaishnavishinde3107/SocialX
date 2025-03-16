@@ -7,7 +7,7 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Theme.of(context).colorScheme.inversePrimary,
@@ -15,7 +15,7 @@ class ChatBubble extends StatelessWidget {
 
       child: Text(
         message,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           color: Colors.white,
         ),

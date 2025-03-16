@@ -17,7 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:socialx/models/message.dart';
 import 'package:socialx/models/user.dart';
 class DatabaseService{
-  // get the instance of firestore db & auth
+  // get the instance of fireStore db & auth
   final _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
@@ -51,7 +51,7 @@ class DatabaseService{
     final userMap = user.toMap();
 
     //save user info in firebase
-    await _db.collection("Users").doc(uid).set(userMap);
+    await _db.collection("users").doc(uid).set(userMap);
   
   }
 
@@ -60,7 +60,7 @@ class DatabaseService{
     try{
 
       //retrieve user doc from firebase
-      DocumentSnapshot userDoc = await _db.collection("User").doc(uid).get();
+      DocumentSnapshot userDoc = await _db.collection("users").doc(uid).get();
 
       //convert doc to user profile
       return Userprofile.fromDocument(userDoc);
@@ -100,53 +100,81 @@ class DatabaseService{
 MESSAGING FEATURE
 * */
 
-  Stream<List<Map<String, dynamic>>> getUserStream(){
-    return _db.collection('users').snapshots().map((snapshot){
-      return snapshot.docs.map((doc){
-        //got through each individual user
-        final user = doc.data();
+  // Stream<List<Map<String, dynamic>>> getUserStream(){
+  //   return _db.collection('users').snapshots().map((snapshot){
+  //     return snapshot.docs.map((doc){
+  //       //got through each individual user
+  //       final user = doc.data();
+  //
+  //       //return user
+  //       return {
+  //         ...user,
+  //         "uid": doc.id,
+  //       };
+  //     }).toList();
+  //   });
+  // }
 
-        //return user
-        return user;
-      }).toList();
-    });
-  }
+  //send message
 
-  //SEND MESSAGES
-  Future<void> sendMessage(String receiverID, message) async {
+  Stream<List<Map<String, dynamic>>> getUserStream() {
     try {
-      // Get current user info
-      final String currentUserId = _auth.currentUser!.uid;
-      final String currentUserEmail = _auth.currentUser!.email!;
-      final Timestamp timestamp = Timestamp.now();
+      return FirebaseFirestore.instance.collection('users').snapshots().map((snapshot) {
+        if (snapshot.docs.isEmpty) {
+          print("DEBUG: No users found in Firestore.");
+        } else {
+          print("DEBUG: Found ${snapshot.docs.length} users.");
+        }
 
-      // Create a new message
-      Message newMessage = Message(
-          senderID: currentUserEmail,
-          senderEmail: currentUserId,
-          receiverID: receiverID,
-          message: message,
-          timestamp: timestamp);
+        return snapshot.docs.map((doc) {
+          final user = doc.data();
 
-      // Construct chat room ID for the two users (sorted to ensure uniqueness)
-      List<String> ids = [currentUserId, receiverID];
-      ids.sort(); // Sort the ids (this ensures the chatRoomID is the same for any 2 people)
-      String chatRoomID = ids.join('_');
+          // Ensure 'email' exists to avoid null errors
+          if (!user.containsKey('email')) {
+            print("WARNING: Missing 'email' field in document ${doc.id}");
+          }
 
-      // Add new message to the database
-      await _db.collection("chat_rooms")
-          .doc(chatRoomID)
-          .collection("messages")
-          .add(newMessage.toMap());
-
-      print("Message sent successfully");
+          return {
+            ...user,
+            "uid": doc.id, // Ensure UID is included
+          };
+        }).toList();
+      });
     } catch (e) {
-      print("Error sending message: $e");
+      print("ERROR: Failed to fetch users - $e");
+      return Stream.value([]); // Return an empty stream in case of failure
     }
   }
 
-  //GET MESSAGES
+
+  Future<void> sendMessage(String receiverID, message) async{
+    //get current user info
+    final String currentUserId = _auth.currentUser!.uid;
+    final String currentUserEmail = _auth.currentUser!.email!;
+    final Timestamp timestamp = Timestamp.now();
+
+    // create a new message
+    Message newMessage = Message(
+        senderID: currentUserId,
+        senderEmail: currentUserEmail,
+        receiverID: receiverID,
+        message: message,
+        timestamp: timestamp);
+
+    //construct chat room ID for the twe users(sorted to ensure uniqueness)
+    List<String> ids = [currentUserId, receiverID];
+    ids.sort(); //sort the ids (this ensure the chatroomID is the same for any 2 people)
+    String chatRoomID = ids.join('_');
+
+    //add new message to database
+    await _db.collection("chat_rooms")
+    .doc(chatRoomID)
+    .collection("messages")
+    .add(newMessage.toMap());
+  }
+  //get messages
 Stream<QuerySnapshot> getMessages(String userID, otherUserID){
+    FirebaseFirestore.instance.clearPersistence();
     //construct a chatroom ID for the two users
   List<String> ids = [userID, otherUserID];
   ids.sort();
