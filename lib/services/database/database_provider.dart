@@ -19,16 +19,16 @@ class DatabaseProvider extends ChangeNotifier {
 
   // Post message
   Future<void> postMessage(String message) async {
-    await _db.postMessageInFirebase(message); // Post to Firebase
+   // await _db.postMessageInFirebase(message); // Post to Firebase
     await fetchAllPosts(); // Refresh posts after posting
   }
 
   // Fetch all posts from Firebase
   Future<void> fetchAllPosts() async {
     try {
-      List<Post> fetchedPosts = await _db.getAllPostsFromFirebase();
+      //List<Post> fetchedPosts = await _db.getAllPostsFromFirebase();
       _allPosts.clear(); // Clear old posts
-      _allPosts.addAll(fetchedPosts); // Add new posts
+      //_allPosts.addAll(fetchedPosts); // Add new posts
       notifyListeners(); // Update UI
     } catch (error) {
       if (kDebugMode) {
