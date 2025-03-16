@@ -80,7 +80,7 @@ class MyDrawer extends StatelessWidget {
                 //     // );
                 //   }),
 
-                Spacer(),
+                const Spacer(),
           
                 //logout tile
                 MyDrawerTile(title: 'L O G O U T', icon: Icons.logout, onTap: () =>context.read<AuthCubit>().logout(),),

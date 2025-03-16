@@ -21,7 +21,8 @@ class Userprofile{
   final String bio;
 
   Userprofile({required this.uid,
-    required this.name,required this.email,
+    required this.name,
+    required this.email,
     required this.username,
     required this.bio});
 
