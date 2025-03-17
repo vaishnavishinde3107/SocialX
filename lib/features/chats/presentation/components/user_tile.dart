@@ -1,7 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:socialx/features/auth/presentation/pages/login_page.dart';
-import 'package:socialx/features/chats/presentation/pages/display_user.dart';
 
 class UserTile extends StatelessWidget {
   final String text;
@@ -18,7 +15,7 @@ class UserTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(12)
         ),
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Row(
           children: [
             //Icon

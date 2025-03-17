@@ -23,6 +23,7 @@ class ProfileUser extends AppUsers {
   }
 
   //convert profile user-> json
+  @override
   Map<String, dynamic> toJson(){
     return{
       'uid':uid,

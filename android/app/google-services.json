@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "252809563846",
-    "project_id": "socialx-3d0c9",
-    "storage_bucket": "socialx-3d0c9.firebasestorage.app"
+    "project_number": "7317010600",
+    "project_id": "socialx-237a3",
+    "storage_bucket": "socialx-237a3.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:252809563846:android:4f27c29959bd24b70951c7",
+        "mobilesdk_app_id": "1:7317010600:android:0aea9a3d40648ce4ec6a9d",
         "android_client_info": {
           "package_name": "com.socialx.socialx"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAwnZRMTRevlzQyTUqocsWhVcr4X0pgmnM"
+          "current_key": "AIzaSyAz-fOq1Z56M20gjVl3aF1V1R89kno8Ik4"
         }
       ],
       "services": {

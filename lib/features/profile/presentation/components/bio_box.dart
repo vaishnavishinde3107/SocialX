@@ -8,7 +8,7 @@ class BioBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       //padding inside
-      padding: EdgeInsets.all(23),
+      padding: const EdgeInsets.all(23),
 
       decoration: BoxDecoration(
         //color

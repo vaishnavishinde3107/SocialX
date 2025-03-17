@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:socialx/features/home/presentation/components/my_drawer_tile.dart';
+import 'package:socialx/features/posts/presentation/pages/twitter.dart';
 import 'package:socialx/features/profile/presentation/pages/profile_page.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -56,17 +57,17 @@ class MyDrawer extends StatelessWidget {
                     );
                   }),
           
-                // //search tile
-                // MyDrawerTile(
-                //   title: '',
-                //   icon: Icons.search,
-                //   onTap: (){
-                //     Navigator.of(context).pop();
-                //     Navigator.of(context).push(
-                //       MaterialPageRoute(
-                //         builder: (){})
-                //     );
-                //   }),
+                //twitter tile
+                MyDrawerTile(
+                  title: 'TWITTER',
+                  icon: Icons.cloud,
+                  onTap: (){
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context)=> const Twitter())
+                    );
+                  }),
 
                 //   //settings tile
                 // MyDrawerTile(
@@ -80,7 +81,7 @@ class MyDrawer extends StatelessWidget {
                 //     // );
                 //   }),
 
-                Spacer(),
+                const Spacer(),
           
                 //logout tile
                 MyDrawerTile(title: 'L O G O U T', icon: Icons.logout, onTap: () =>context.read<AuthCubit>().logout(),),

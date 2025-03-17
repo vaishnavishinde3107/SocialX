@@ -20,6 +20,12 @@ dependencies:
   firebase_core: ^3.11.0
   firebase_auth: ^5.4.2
   flutter_bloc: ^9.0.0
+  firebase_storage: ^12.4.4
+
+  # file
+  file_picker: ^9.2.0
+  cached_network_image: ^3.4.1
+
 
 dev_dependencies:
   flutter_test:
