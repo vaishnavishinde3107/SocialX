@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
     final firebaseProfileRepo = FirebaseProfileRepo();
     //storage repo
     final firebaseStorageRepo = FirebaseStorageRepo();
-
     //post repo
     final firebasePostRepo = FirebasePostRepo();
 

@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:socialx/features/auth/domain/entities/app_users.dart';
 import 'package:socialx/features/auth/presentation/components/my_textfield.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
@@ -42,19 +43,38 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Future<void> pickImage() async{
     final result = await FilePicker.platform.pickFiles(
       type: FileType.image,
-      withData: kIsWeb,
+      withData: kIsWeb,  // `withData` is `true` when using web
     );
 
-    if(result != null) {
+    if (result != null) {
       setState(() {
         imagePickedFile = result.files.first;
 
-        if(kIsWeb){
+        // For web, store the image bytes
+        if (kIsWeb) {
           webImage = imagePickedFile?.bytes;
         }
       });
+
+      // Debugging logs to verify if the image was selected
+      print("Picked image: ${imagePickedFile?.path}");  // For mobile
+      print("Web image bytes: ${webImage}");  // For web
     }
   }
+
+  //compress image
+  // Future<void> compressImage() async {
+  //   final result = await FlutterImageCompress.compressWithFile(
+  //     imagePickedFile!.path!,
+  //     minWidth: 800,
+  //     minHeight: 800,
+  //     quality: 80,
+  //   );
+  //
+  //   setState(() {
+  //     webImage = result;
+  //   });
+  // }
 
   //create & upload post
   void uploadPost(){
@@ -149,7 +169,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
             if(kIsWeb && webImage != null)
               Image.memory(webImage!),
             //image preview for mobile
-            if(kIsWeb && imagePickedFile != null)
+            if(!kIsWeb && imagePickedFile != null)
               Image.file(File(imagePickedFile!.path!)),
             
             //pick image button
