@@ -6,7 +6,7 @@ class DatabaseProvider extends ChangeNotifier {
   /*
   SERVICES
    */
-  final _db = DatabaseService();
+  //final _db = DatabaseService();
 
   /*
   POSTS
