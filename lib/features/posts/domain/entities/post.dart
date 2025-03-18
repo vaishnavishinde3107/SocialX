@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
   final String id;
-  final String userId;
+  late final String userId;
   final String userName;
   final String text;
   final String imageUrl;

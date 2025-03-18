@@ -16,11 +16,21 @@ Future<AppUsers?> getCurrentUsers() async {
     return null;
   }
 
+  //fetch user document from firestore
+  DocumentSnapshot userDoc = await firebaseFirestore.collection('users')
+  .doc(firebaseUser.uid)
+  .get();
+
+  //fetch if user exists
+  if(!userDoc.exists){
+    return null;
+  }
+
   // If user exists
   return AppUsers(
     uid: firebaseUser.uid, 
     email: firebaseUser.email!, 
-    name: '');
+    name: userDoc['name']);
 }
 
 
@@ -30,8 +40,17 @@ Future<AppUsers?> getCurrentUsers() async {
       //attempt sign in
       UserCredential userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
+      //fetch user document from firestore
+      DocumentSnapshot userDoc = await firebaseFirestore.collection('users')
+      .doc(userCredential.user!.uid)
+      .get();
+
+
       //create user
-      AppUsers user = AppUsers(uid: userCredential.user!.uid, email:email, name: '');
+      AppUsers user = AppUsers(
+          uid: userCredential.user!.uid,
+          email:email,
+          name: userDoc['name']);
 
       //return user
       return user;
