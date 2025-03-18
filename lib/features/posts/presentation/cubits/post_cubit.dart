@@ -41,48 +41,29 @@ class PostCubit extends Cubit<PostState> {
         print("Image upload failed. No URL returned.");
       }
 
-      // Give image URL to the post
-      final newPost = posts.copyWith(imageUrl: imageUrl);
-      print("New post created with image URL: ${newPost.imageUrl}");
+    //give image url to post
+    final newPost = posts.copyWith(imageUrl: imageUrl);
 
-      // Create post in the backend
-      print("Creating post in the backend...");
-      await postRepo.createPost(newPost);
-      print("Post created successfully.");
+    //create post in the backend
+    postRepo.createPost(newPost);
 
-      // Fetch all posts after posting
-      print("Fetching all posts...");
-      await fetchAllPosts();
-      print("All posts fetched successfully.");
-
-      // Emit PostsLoaded or similar state to indicate the process is complete
-      //emit(PostsLoaded(allPosts));  // Update the state to indicate the post was successfully created and loaded.
-      print("State set to PostsLoaded.");
-
-    } catch (e) {
-      print("Error occurred: $e");
-      emit(PostsError('Failed to create post: $e'));
-    }
+    //re-fetch all in the backend
+    fetchAllPosts();
+  }catch(e){
+    emit(PostsError('Failed to create post: $e'));
   }
+}
 
-
-  Future<void> fetchAllPosts() async {
-    try {
-      // Emit loading state to indicate that the posts are being fetched
-      emit(PostsLoading());
-
-      // Fetch all posts (you should uncomment and call the appropriate fetch function from your repository)
-      final List<Post> allPosts = await postRepo.fetchAllPosts();
-
-      // Emit the PostsLoaded state with the fetched posts
-      emit(PostsLoaded(allPosts));
-
-    } catch (e) {
-      // If an error occurs during the fetch, emit PostsError with the error message
-      emit(PostsError('Error fetching posts: $e'));
-    }
+  //fetch all posts
+Future<void> fetchAllPosts() async{
+  try{
+    emit(PostsLoading());
+    //final post = await postRepo.fetchAllPosts();
   }
-
+  catch(e){
+    emit(PostsError('Error fetching posts: $e'));
+  }
+}
 
   //delete a post
 Future<void> deletePost(String postId) async {
