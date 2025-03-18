@@ -84,6 +84,7 @@ class _PostTileState extends State<PostTile> {
 
   @override
   Widget build(BuildContext context) {
+    print("User Name: ${widget.post.userName}");
     return Container(
       color: Theme.of(context).colorScheme.secondary,
       child: Column(
@@ -115,7 +116,12 @@ class _PostTileState extends State<PostTile> {
                 const SizedBox(width: 10,),
 
                 //name
-                Text(widget.post.userName),
+                Text(
+                  postUser?.name ?? widget.post.userName, // Fallback to widget.post.userName if postUser is null
+                  style: const TextStyle(
+                      color: Colors.black
+                  ),
+                ),
 
                 const Spacer(),
 
@@ -123,7 +129,7 @@ class _PostTileState extends State<PostTile> {
                 if(isOwnPost)
                   IconButton(
                     onPressed: showOption,
-                    icon: const Icon(Icons.delete),
+                    icon: const Icon(Icons.delete,),
                   ),
               ],
             ),
@@ -138,6 +144,31 @@ class _PostTileState extends State<PostTile> {
             placeholder: (context, url) => const SizedBox(height: 430),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
+
+          //buttons -> Like, comment, timestamp
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              children: [
+                const Icon(Icons.favorite_border),
+
+                Text('0'),
+
+                const SizedBox(width: 20,),
+
+                // comment button
+                const Icon(Icons.comment),
+
+                Text('0'),
+
+                const Spacer(),
+
+                //timestamp
+                Text(widget.post.timestamp.toString()),
+              ],
+            ),
+          ),
+
         ],
       ),
     );
