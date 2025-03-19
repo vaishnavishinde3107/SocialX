@@ -18,22 +18,15 @@ class PostCubit extends Cubit<PostState> {
     String? imageUrl;
 
     try {
-      print("Starting post creation...");
-
       emit(PostsUploading());  // Emit loading state when starting the upload process.
-      print("State set to uploading");
 
       // Handle image upload for mobile platforms (using file path)
       if (imagePath != null) {
-        print("Uploading image from mobile: $imagePath");
         imageUrl = await storageRepo.uploadPostImageMobile(imagePath, posts.id);
-        print("Image uploaded. URL: $imageUrl");
       }
       // Handle image upload for web platforms (using file bytes)
       else if (imageBytes != null) {
-        print("Uploading image from web (bytes).");
         imageUrl = await storageRepo.uploadPostImageWeb(imageBytes, posts.id);
-        print("Image uploaded. URL: $imageUrl");
       }
 
       // If imageUrl is null, it means the upload failed. Log this scenario.
@@ -71,5 +64,14 @@ Future<void> deletePost(String postId) async {
   try{
     await postRepo.deletePost(postId);
   }catch(e){}
+}
+
+  //toggle like on a post
+Future<void> toggleLikedPost(String postId, String userId) async{
+    try{
+      await postRepo.toggleLikePost(postId, userId);
+    }catch(e){
+      emit(PostsError("Failed to toggle like: $e"));
+    }
 }
 }

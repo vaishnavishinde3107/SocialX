@@ -6,7 +6,7 @@ import 'package:socialx/features/auth/domain/entities/app_users.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:socialx/features/posts/presentation/cubits/post_cubit.dart';
 
-import '../../../posts/domain/entities/post.dart';
+import '../../domain/entities/post.dart';
 import '../../../profile/domain/entities/profile_user.dart';
 import '../../../profile/presentation/cubits/profile_cubits.dart';
 
@@ -54,6 +54,38 @@ class _PostTileState extends State<PostTile> {
         postUser = fetchUser;
       });
     }
+  }
+
+  /*
+  * Likes
+  * */
+
+  //user tapped like button
+  void toggleLikePost() {
+    //current like status
+    final isLiked = widget.post.likes.contains(currentUser!.uid);
+
+    //optimistically like and & update UI
+    setState(() {
+      if(isLiked){
+        widget.post.likes.remove(currentUser!.uid); //unlike
+      } else {
+        widget.post.likes.add(currentUser!.uid); // like
+      }
+    });
+
+    //update like
+    postCubit.toggleLikedPost(widget.post.id, currentUser!.uid).catchError((error){
+      //if theres an error revert back to original value
+      setState(() {
+        if(isLiked){
+          widget.post.likes.add(currentUser!.uid); // revert unlike
+        } else {
+          widget.post.likes.remove(currentUser!.uid); // revert like
+        }
+      });
+
+    });
   }
 
   // Show options for deletion
@@ -150,9 +182,15 @@ class _PostTileState extends State<PostTile> {
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: [
-                const Icon(Icons.favorite_border),
+                GestureDetector(
+                  onTap: toggleLikePost,
+                    child: Icon(
+                      widget.post.likes.contains(currentUser!.uid)
+                        ? Icons.favorite
+                      : Icons.favorite_border,
+                    )),
 
-                Text('0'),
+                Text(widget.post.likes.length.toString()),
 
                 const SizedBox(width: 20,),
 
