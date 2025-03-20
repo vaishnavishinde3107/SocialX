@@ -169,7 +169,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Center(child: MaterialButton(
               onPressed: pickImage,
           color: Colors.blue,
-          child: Text("Pick Image"),),
+          child: const Text("Pick Image"),),
           ),
 
           //bio

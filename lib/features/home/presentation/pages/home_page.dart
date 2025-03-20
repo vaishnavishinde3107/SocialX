@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:socialx/features/chats/presentation/pages/display_user.dart';
 import 'package:socialx/features/home/presentation/components/my_drawer.dart';
 import 'package:socialx/features/posts/presentation/components/post_tile.dart';

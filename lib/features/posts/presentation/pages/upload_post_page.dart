@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:socialx/features/auth/domain/entities/app_users.dart';
 import 'package:socialx/features/auth/presentation/components/my_textfield.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
@@ -58,7 +57,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
       // Debugging logs to verify if the image was selected
       print("Picked image: ${imagePickedFile?.path}");  // For mobile
-      print("Web image bytes: ${webImage}");  // For web
+      print("Web image bytes: $webImage");  // For web
     }
   }
 

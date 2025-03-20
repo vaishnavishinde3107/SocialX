@@ -48,7 +48,7 @@ class _ChatPageState extends State<ChatPage> {
           //user input
           _buildMessageInput(),
 
-          SizedBox(height: 25,)
+          const SizedBox(height: 25,)
         ],
       ),
     );
@@ -113,7 +113,7 @@ class _ChatPageState extends State<ChatPage> {
           :MainAxisAlignment.start,
           children: [
             Text(data['senderID']),
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
             ChatBubble(message: data['message']),
           ],
         ),

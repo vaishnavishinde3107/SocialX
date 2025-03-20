@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialx/app.dart';
 import 'package:socialx/features/auth/domain/entities/app_users.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:socialx/features/posts/presentation/cubits/post_cubit.dart';
@@ -197,7 +196,7 @@ class _PostTileState extends State<PostTile> {
                 // comment button
                 const Icon(Icons.comment),
 
-                Text('0'),
+                const Text('0'),
 
                 const Spacer(),
 

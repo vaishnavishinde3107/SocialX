@@ -46,13 +46,13 @@ class DatabaseService{
       username: username,
       bio: '',
     );
-    
+
     //convert user into a map so that we can store in firebase
     final userMap = user.toMap();
 
     //save user info in firebase
     await _db.collection("Users").doc(uid).set(userMap);
-  
+
   }
 
   //Get user info
@@ -68,7 +68,7 @@ class DatabaseService{
     }catch (e){
       print (e);
       return null;
-      }
+    }
 
   }
 
@@ -76,6 +76,7 @@ class DatabaseService{
   POST MESSAGE
 
  */
+
 
 /*
   LIKES
@@ -146,16 +147,16 @@ MESSAGING FEATURE
   }
 
   //GET MESSAGES
-Stream<QuerySnapshot> getMessages(String userID, otherUserID){
+  Stream<QuerySnapshot> getMessages(String userID, otherUserID){
     //construct a chatroom ID for the two users
-  List<String> ids = [userID, otherUserID];
-  ids.sort();
-  String chatRoomID = ids.join('_');
+    List<String> ids = [userID, otherUserID];
+    ids.sort();
+    String chatRoomID = ids.join('_');
 
-  return _db.collection("chat_rooms")
-      .doc(chatRoomID)
-      .collection("messages")
-      .orderBy("timestamp", descending: false).snapshots();
-}
+    return _db.collection("chat_rooms")
+        .doc(chatRoomID)
+        .collection("messages")
+        .orderBy("timestamp", descending: false).snapshots();
+  }
 }
 

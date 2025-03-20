@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-
 import '../../../../services/database/database_provider.dart';
-import '../../../home/presentation/pages/home_page.dart';
 import '../components/my_input_alertBox.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class Twitter extends StatefulWidget {
   const Twitter({super.key});
@@ -12,9 +13,6 @@ class Twitter extends StatefulWidget {
 }
 
 class _TwitterState extends State<Twitter> {
-  //provider
-  //late final databaseProvider = Provider.of<DatabaseProvider>(context,listen: false);
-
   // Text controller
   final TextEditingController _messageController = TextEditingController();
 
@@ -40,10 +38,10 @@ class _TwitterState extends State<Twitter> {
           Navigator.pop(context);
 
           // Get provider instance
-          //final databaseProvider = Provider.of<DatabaseProvider>(context, listen: false);
+          final databaseProvider = Provider.of<DatabaseProvider>(context, listen: false);
 
           // Post in database
-          //await postMessage(databaseProvider, _messageController.text);
+          await postMessage(databaseProvider, _messageController.text);
 
           // Clear the text field after posting
           _messageController.clear();
@@ -53,15 +51,42 @@ class _TwitterState extends State<Twitter> {
     );
   }
 
-  // User wants to post message
+
+
+// User wants to post message
   Future<void> postMessage(DatabaseProvider databaseProvider, String message) async {
     try {
-      await databaseProvider.postMessage(message);
+      // Get the authenticated user's ID dynamically
+      final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+      if (userId.isEmpty) {
+        print("Error: User is not authenticated.");
+        return;
+      }
+
+      // Fetch user data from the database
+      final user = await databaseProvider.getCurrentUser(userId);
+
+      if (user == null) {
+        print("Error: User data not found.");
+        return;
+      }
+
+      // Post the message with fetched user data
+      await databaseProvider.postMessageInFirebase(
+        uid: user['uid'],
+        name: user['name'],
+        username: user['username'],
+        message: message,
+        imageUrl: user['imageUrl'] ?? '',
+      );
+
       print("Post uploaded successfully");
     } catch (e) {
       print("Error posting message: $e");
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

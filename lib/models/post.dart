@@ -20,28 +20,29 @@ class Post {
     required this.timestamp,
     required this.likeCount,
     required this.likedBy,
-    required this.imageUrl
+    required this.imageUrl,
   });
 
   // Convert Firestore Document to Post object
-  factory Post.fromDocument(DocumentSnapshot doc) {
+  factory Post.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
     return Post(
-      id: doc.id, // Firestore document ID
-      uid: doc['uid'] ?? '',
-      name: doc['name'] ?? '',
-      username: doc['username'] ?? '',
-      message: doc['message'] ?? '',
-      timestamp: doc['timestamp'] ?? Timestamp.now(),
-      likeCount: doc['likes'] ?? 0, // Fix: should match Firestore field
-      likedBy: List<String>.from(doc['likedBy'] ?? []),
-      imageUrl: doc['imageUrl'] ?? '',
+      id: doc.id,
+      uid: data['uid'] ?? '',
+      name: data['name'] ?? '',
+      username: data['username'] ?? '',
+      message: data['message'] ?? '',
+      timestamp: data['timestamp'] ?? Timestamp.now(),
+      likeCount: data['likes'] ?? 0,
+      likedBy: List<String>.from(data['likedBy'] ?? []),
+      imageUrl: data['imageUrl'] ?? '',
     );
   }
 
   // Convert Post Object to a Map
   Map<String, dynamic> toMap() {
     return {
-      'id': id, // Ensure ID is stored
+      'id': id,
       'uid': uid,
       'name': name,
       'username': username,
@@ -49,6 +50,7 @@ class Post {
       'timestamp': timestamp,
       'likes': likeCount,
       'likedBy': likedBy,
+      'imageUrl': imageUrl,
     };
   }
 }
