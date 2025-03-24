@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/features/chats/presentation/pages/display_user.dart';
 import 'package:socialx/features/home/presentation/components/my_drawer.dart';
-import 'package:socialx/features/posts/presentation/components/post_tile.dart';
+import 'package:socialx/features/home/presentation/components/post_tile.dart';
 import 'package:socialx/features/posts/presentation/cubits/post_states.dart';
 import 'package:socialx/features/posts/presentation/pages/upload_post_page.dart';
 import '../../../posts/presentation/cubits/post_cubit.dart';
