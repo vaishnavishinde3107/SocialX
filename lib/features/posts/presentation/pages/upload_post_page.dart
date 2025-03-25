@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:socialx/features/auth/domain/entities/app_users.dart';
 import 'package:socialx/features/auth/presentation/components/my_textfield.dart';
 import 'package:socialx/features/auth/presentation/cubits/auth_cubit.dart';
@@ -93,7 +92,10 @@ class _UploadPostPageState extends State<UploadPostPage> {
         userName: currentUser!.name,
         text: textEditingController.text,
         imageUrl: '',
-        timestamp: DateTime.now());
+        //timestamp: DateTime.now(),
+        likes: [],
+        comment: []
+    );
 
     //post cubit
     final postCubit = context.read<PostCubit>();
@@ -108,11 +110,11 @@ class _UploadPostPageState extends State<UploadPostPage> {
       postCubit.createPost(newPost, imagePath: imagePickedFile?.path);
     }
 
-    @override
-    void dispose()  {
-      textEditingController.dispose();
-      super.dispose();
-    }
+    // @override
+    // void dispose()  {
+    //   textEditingController.dispose();
+    //   super.dispose();
+    // }
 
   }
 
