@@ -74,7 +74,7 @@ class DatabaseProvider extends ChangeNotifier {
           .get();
 
       _allPosts.clear();
-      _allPosts.addAll(snapshot.docs.map((doc) => Post.fromFirestore(doc)).toList());
+      //_allPosts.addAll(snapshot.docs.map((doc) => Post.fromFirestore(doc)).toList());
       notifyListeners();
       print("Posts fetched successfully! Total: ${_allPosts.length}");
     } catch (error) {
