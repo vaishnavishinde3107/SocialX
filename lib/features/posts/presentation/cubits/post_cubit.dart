@@ -85,7 +85,7 @@ Future<void> toggleLikedPost(String postId, String userId) async{
       
       await fetchAllPosts();
     }catch(e){
-      emit(PostsError('Failes to add comment'));
+      emit(PostsError('Fails to add comment'));
     }
   }
 
